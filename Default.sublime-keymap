@@ -1,0 +1,3 @@
+[
+    { "keys": ["alt+r"], "command": "regexexplaintip" }
+]

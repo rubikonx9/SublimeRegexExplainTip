@@ -1,0 +1,140 @@
+html {
+    background-color: #232628;
+    color:            white;
+}
+
+body {
+    font-size: 15rem;
+}
+
+div.expander {
+    padding-left: 300px;
+}
+
+div.rule {
+    margin: 10rem;
+}
+
+div.regex {
+    color: white;
+}
+
+div.explanation {
+    margin-left: 120rem;
+    margin-top:  10rem;
+    color:       #BBBB;
+}
+
+div.separator-outer {
+    background-color: #333;
+}
+
+div.separator-inner {
+    margin-top:       1px;
+    background-color: #232628;
+}
+
+span.literal {
+    color: #A21715;
+}
+
+span.bracket {
+    color: #55C;
+}
+
+span.quantifier {
+    color: #5C58;
+}
+
+span.meta {
+    color: #CC5;
+}
+
+div.group-outer {
+    background-color: #CCC;
+    margin-top:       20rem;
+    margin-bottom:    10rem;
+}
+
+div.group-inner {
+    margin-top:       2rem;
+    margin-left:      2rem;
+    margin-bottom:    2rem;
+    margin-right:     2rem;
+
+    padding-top:      4rem;
+    padding-left:     6rem;
+    padding-bottom:   4rem;
+    padding-right:    4rem;
+
+    background-color: #232628;
+}
+
+div.group-info-header {
+    color:         #777;
+    font-size:     13rem;
+    margin-bottom: 10rem;
+}
+
+div.group-info-footer {
+    color:         #777;
+    font-size:     13rem;
+    margin-top:    10rem;
+    margin-bottom: 10rem;
+}
+
+div.level-1 {
+    background-color: #CCC9;
+}
+
+div.level-2 {
+    background-color: #C559;
+}
+
+div.level-3 {
+    background-color: #5C59;
+}
+
+div.level-4 {
+    background-color: #55CA;
+}
+
+div.level-5 {
+    background-color: #5CC9;
+}
+
+div.level-6 {
+    background-color: #C5C9;
+}
+
+div.level-7 {
+    background-color: #CC59;
+}
+
+div.level-8 {
+    background-color: #CCC9;
+}
+
+div.level-9 {
+    background-color: #C559;
+}
+
+div.level-10 {
+    background-color: #5C59;
+}
+
+div.level-11 {
+    background-color: #55CA;
+}
+
+div.level-12 {
+    background-color: #5CC9;
+}
+
+div.level-13 {
+    background-color: #C5C9;
+}
+
+div.level-14 {
+    background-color: #CC59;
+}
