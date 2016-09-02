@@ -2,6 +2,7 @@
 RegexExplainTip plugin for Sublime Text 3.
 """
 
+import os
 import re
 import subprocess
 
@@ -100,9 +101,19 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
             print $explanation;
         """ % re.sub("\\\\", "\\\\\\\\", regex)
 
-        out, _ = subprocess.Popen([ "perl", "-e", command ], stdout = subprocess.PIPE).communicate()
+        startupinfo = None
 
-        return out.decode("utf-8")
+        if os.name == "nt":
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+        out, _ = subprocess.Popen(
+            [ "perl", "-e", command ],
+            stdout      = subprocess.PIPE,
+            startupinfo = startupinfo
+        ).communicate()
+
+        return out.decode("utf-8").replace("\r", "")
 
     def partition_by_empty_line(self, lines):
         """
