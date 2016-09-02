@@ -43,10 +43,11 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
         (r"&",                                  "&amp;"),
         (r"<",                                  "&lt;"),
         (r">",                                  "&gt;"),
-        (r"'(.*?)'",                            """<span class=\"literal\">
+        (r"(?<!\\)'(.*?)(?<!\\)'",              """<span class=\"literal\">
                                                        \\g<1>
                                                    </span>
                                                 """),
+        (r"\\\'",                               "'"),
         (r"(\\.)",                              """<span class=\"literal\">
                                                        \\g<1>
                                                    </span>
@@ -99,7 +100,7 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
             my $explanation = YAPE::Regex::Explain->new('%s')->explain('regex');
 
             print $explanation;
-        """ % re.sub("\\\\", "\\\\\\\\", regex)
+        """ % re.sub("\'", "\\\'", re.sub("\\\\", "\\\\\\\\", regex))
 
         startupinfo = None
 
@@ -107,11 +108,14 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-        out, _ = subprocess.Popen(
+        out, err = subprocess.Popen(
             [ "perl", "-e", command ],
             stdout      = subprocess.PIPE,
             startupinfo = startupinfo
         ).communicate()
+
+        if err:
+            print(err.decode("utf-8").replace("\r", ""))
 
         return out.decode("utf-8").replace("\r", "")
 
