@@ -42,7 +42,6 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
         (r"&",                                  "&amp;"),
         (r"<",                                  "&lt;"),
         (r">",                                  "&gt;"),
-        (r"\"",                                 "&quot;"),
         (r"'(.*?)'",                            """<span class=\"literal\">
                                                        \\g<1>
                                                    </span>
@@ -96,7 +95,7 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
         command = """
             use YAPE::Regex::Explain;
 
-            my $explanation = YAPE::Regex::Explain->new("%s")->explain('regex');
+            my $explanation = YAPE::Regex::Explain->new('%s')->explain('regex');
 
             print $explanation;
         """ % re.sub("\\\\", "\\\\\\\\", regex)
