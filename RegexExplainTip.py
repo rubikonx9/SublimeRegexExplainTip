@@ -52,7 +52,7 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
                                                        \\g<1>
                                                    </span>
                                                 """),
-        (r"(OR|\^|\$|\.|\\\d+)",                """<span class=\"meta\">
+        (r"((^OR$)|\^|\$|\.|\\\d+)",            """<span class=\"meta\">
                                                        \\g<1>
                                                    </span>
                                                 """),
@@ -94,13 +94,18 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
         """
         Calls Perl to get the textual explan\\ation of the regex.
         """
+        regex = re.sub(r"\'",   r"\\\'",     regex)
+        regex = re.sub(r"\\\[", r"\\\\\[",   regex)
+        regex = re.sub(r"\\\]", r"\\\\\]",   regex)
+        regex = re.sub(r"\\\\", r"\\\\\\\\", regex)
+
         command = """
             use YAPE::Regex::Explain;
 
             my $explanation = YAPE::Regex::Explain->new('%s')->explain('regex');
 
             print $explanation;
-        """ % re.sub("\'", "\\\'", re.sub("\\\\", "\\\\\\\\", regex))
+        """ % regex
 
         startupinfo = None
 
