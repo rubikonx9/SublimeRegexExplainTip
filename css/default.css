@@ -4,7 +4,7 @@ html {
 }
 
 body {
-    font-size: 15rem;
+    font-size: 15px;
 }
 
 div.expander {
@@ -12,7 +12,7 @@ div.expander {
 }
 
 div.rule {
-    margin: 10rem;
+    margin: 10px;
 }
 
 div.regex {
@@ -20,8 +20,8 @@ div.regex {
 }
 
 div.explanation {
-    margin-left: 120rem;
-    margin-top:  10rem;
+    margin-left: 120px;
+    margin-top:  10px;
     color:       #BBBB;
 }
 
@@ -30,7 +30,7 @@ div.separator-outer {
 }
 
 div.separator-inner {
-    margin-top:       1px;
+    margin-top:       11px;
     background-color: #232628;
 }
 
@@ -52,35 +52,35 @@ span.meta {
 
 div.group-outer {
     background-color: #CCC;
-    margin-top:       20rem;
-    margin-bottom:    10rem;
+    margin-top:       20px;
+    margin-bottom:    10px;
 }
 
 div.group-inner {
-    margin-top:       2rem;
-    margin-left:      2rem;
-    margin-bottom:    2rem;
-    margin-right:     2rem;
+    margin-top:       12px;
+    margin-left:      2px;
+    margin-bottom:    2px;
+    margin-right:     2px;
 
-    padding-top:      4rem;
-    padding-left:     6rem;
-    padding-bottom:   4rem;
-    padding-right:    4rem;
+    padding-top:      4px;
+    padding-left:     6px;
+    padding-bottom:   4px;
+    padding-right:    4px;
 
     background-color: #232628;
 }
 
 div.group-info-header {
     color:         #777;
-    font-size:     13rem;
-    margin-bottom: 10rem;
+    font-size:     13px;
+    margin-bottom: 10px;
 }
 
 div.group-info-footer {
     color:         #777;
-    font-size:     13rem;
-    margin-top:    10rem;
-    margin-bottom: 10rem;
+    font-size:     13px;
+    margin-top:    10px;
+    margin-bottom: 10px;
 }
 
 div.level-1 {
