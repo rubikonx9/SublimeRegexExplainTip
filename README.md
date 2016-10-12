@@ -16,7 +16,7 @@ Clone this repository to `Packages` directory.
 
 ## How to use
 
-Press `alt+r` to display the explanation of selected text.
+Press <kbd>Alt</kbd>+<kbd>R</kbd> to display the explanation of selected text.
 Currently, a region must be explicitly selected.
 
 ## Dependencies
