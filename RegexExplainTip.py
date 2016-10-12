@@ -92,37 +92,50 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
 
     def get_explanation(self, regex):
         """
-        Calls Perl to get the textual explan\\ation of the regex.
+        Calls Perl to get the textual explanation of the regex.
         """
         regex = re.sub(r"\'",   r"\\\'",     regex)
         regex = re.sub(r"\\\[", r"\\\\\[",   regex)
         regex = re.sub(r"\\\]", r"\\\\\]",   regex)
         regex = re.sub(r"\\\\", r"\\\\\\\\", regex)
+        regex = regex.encode('raw_unicode_escape').decode()
 
         command = """
+            use utf8;
             use YAPE::Regex::Explain;
 
-            my $explanation = YAPE::Regex::Explain->new('%s')->explain('regex');
+            my $regex_string = '%s';
+
+            $regex_string =~ s|\\\\u([a-zA-Z0-9]{4})|UNICODE_ESCAPE_SEQUENCE$1|g;
+
+            my $explanation = YAPE::Regex::Explain->new($regex_string)->explain('regex');
 
             print $explanation;
-        """ % regex
+        """ % re.sub("'", "\\'", re.sub("\\\\", "\\\\\\\\", regex))
 
         startupinfo = None
 
         if os.name == "nt":
-            startupinfo = subprocess.STARTUPINFO()
+            startupinfo          = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-        out, err = subprocess.Popen(
+        perl_call = subprocess.Popen(
             [ "perl", "-e", command ],
             stdout      = subprocess.PIPE,
+            stderr      = subprocess.PIPE,
             startupinfo = startupinfo
-        ).communicate()
+        )
+
+        out, err = perl_call.communicate()
 
         if err:
-            print(err.decode("utf-8").replace("\r", ""))
+            print("""RegexExplainTip: error calling Perl's `YAPE::Regex::Explain`.\nExit code: %d.\nSTDERR: '%s'.\nExpression being parsed: '%s'.""" % (
+                perl_call.returncode,
+                err.decode().replace("\r", "").strip(),
+                regex
+            ))
 
-        return out.decode("utf-8").replace("\r", "")
+        return out.decode().replace("\r", "")
 
     def partition_by_empty_line(self, lines):
         """
@@ -139,6 +152,12 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
                 current_partition.append(line)
 
         return partitioned
+
+    def unescape_unicode(self, text):
+        text = re.sub("UNICODE_ESCAPE_SEQUENCE([a-zA-Z0-9]{4})", "\\\\u\g<1>", text)
+        text = text.encode().decode("raw_unicode_escape")
+
+        return text
 
     def extract_regex_and_explanation(self, rules):
         """
@@ -157,8 +176,8 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
                 explanation_parts.append(explanation)
 
             result.append({
-                "regex"       : "".join(regex_parts).strip(),
-                "explanation" : "".join(explanation_parts).strip()
+                "regex"       : self.unescape_unicode("".join(regex_parts)),
+                "explanation" : self.unescape_unicode("".join(explanation_parts))
             })
 
         return result
@@ -297,9 +316,12 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
         for part in parts:
             i += 1
 
-            if i >= hashes_count / 2:
+            if i >= hashes_count / 2: # Just reached the middle one
                 regex       = line[ : part.start() ]
                 explanation = line[ part.end() : ]
+
+                regex       = re.sub("(?<!\\\)\s+$", "", re.sub("^\s+", "", regex))
+                explanation = re.sub("(?<!\\\)\s+$", "", re.sub("^\s+", "", explanation))
 
                 break
 
