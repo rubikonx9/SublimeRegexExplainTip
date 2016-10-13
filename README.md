@@ -12,7 +12,8 @@ Having it available in a text editor can be an asset.
 
 ## Installation
 
-Clone this repository to `Packages` directory.
+Install via [Package Control](https://packagecontrol.io/).
+Alternatively, clone this repository to `Packages` directory.
 
 ## How to use
 
