@@ -3,7 +3,7 @@ SublimeText 3 plugin for displaying regular expression explanations
 
 ## What it looks like
 
-![Screenshot](/screenshots/1.PNG)
+![Screenshot](https://raw.githubusercontent.com/rubikonx9/SublimeRegexExplainTip/master/screenshots/1.PNG)
 
 ## Why?
 
