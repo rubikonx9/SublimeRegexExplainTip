@@ -2,6 +2,7 @@
 RegexExplainTip plugin for Sublime Text 3.
 """
 
+import errno
 import os
 import re
 import subprocess
@@ -94,6 +95,9 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
         """
         Calls Perl to get the textual explanation of the regex.
         """
+        if regex == "":
+            return ""
+
         regex = re.sub(r"\'",   r"\\\'",     regex)
         regex = re.sub(r"\\\[", r"\\\\\[",   regex)
         regex = re.sub(r"\\\]", r"\\\\\]",   regex)
@@ -119,19 +123,32 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
             startupinfo          = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-        perl_call = subprocess.Popen(
-            [ "perl", "-e", command ],
-            stdout      = subprocess.PIPE,
-            stderr      = subprocess.PIPE,
-            startupinfo = startupinfo
-        )
+        try:
+            perl_call = subprocess.Popen(
+                [ "perl", "-e", command ],
+                stdout      = subprocess.PIPE,
+                stderr      = subprocess.PIPE,
+                startupinfo = startupinfo
+            )
+        except OSError as exception:
+            if exception.errno == errno.ENOENT:
+                sublime.error_message("RegexExplainTip:\nIt seems that you have no Perl installed.\nVerify the installation and $PATH.")
+
+            print("RegexExplainTip: exception: '%s'." % exception.strerror)
+
+            return ""
 
         out, err = perl_call.communicate()
 
         if err:
-            print("""RegexExplainTip: error calling Perl's `YAPE::Regex::Explain`.\nExit code: %d.\nSTDERR: '%s'.\nExpression being parsed: '%s'.""" % (
+            message = err.decode().replace("\r", "").strip()
+
+            if re.match(r"Can\'t locate YAPE\/Regex\/Explain\.pm", message):
+                sublime.error_message("RegexExplainTip:\nIt seems that you have no `YAPE::Regex::Explain` module installed.\nVerify the installation.")
+
+            print("RegexExplainTip: error calling Perl's `YAPE::Regex::Explain`.\nExit code: %d.\nSTDERR: '%s'.\nExpression being parsed: '%s'." % (
                 perl_call.returncode,
-                err.decode().replace("\r", "").strip(),
+                message,
                 regex
             ))
 
