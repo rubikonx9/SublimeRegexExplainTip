@@ -74,13 +74,31 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
 
         self.load_css()
 
+    def observe_settings(self):
+        """
+        Adds an observer to settings file, which reloads the CSS file anytime the settings are changed.
+        """
+        settings = sublime.load_settings("RegexExplainTip.sublime-settings")
+
+        settings.clear_on_change("RegexExplainTip")
+        settings.add_on_change("RegexExplainTip", self.load_css)
+
     def load_css(self):
         """
         Loads CSS from file and stores it as object property.
         """
-        css_file = "Packages/RegexExplainTip/css/default.css"
+        settings = sublime.load_settings("RegexExplainTip.sublime-settings")
+        css_file = settings.get("css_file")
 
-        self.css = sublime.load_resource(css_file).replace("\r", "")
+        print("RegexExplainTip:\nLoading CSS file: '%s'." % css_file)
+
+        self.observe_settings()
+
+        try:
+            self.css = sublime.load_resource(css_file).replace("\r", "")
+        except IOError:
+            self.css = ""
+            print("RegexExplainTip:\nSpecified file: '%s' does not seem to exists." % css_file)
 
     def get_selected_text(self):
         """
