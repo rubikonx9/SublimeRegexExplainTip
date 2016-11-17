@@ -90,8 +90,6 @@ class RegexexplaintipCommand(sublime_plugin.TextCommand):
         settings = sublime.load_settings("RegexExplainTip.sublime-settings")
         css_file = settings.get("css_file")
 
-        print("RegexExplainTip:\nLoading CSS file: '%s'." % css_file)
-
         self.observe_settings()
 
         try:
