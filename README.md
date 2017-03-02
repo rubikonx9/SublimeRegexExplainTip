@@ -17,7 +17,7 @@ Alternatively, clone this repository to `Packages` directory.
 
 ## How to use
 
-Press <kbd>Alt</kbd>+<kbd>R</kbd> to display the explanation of selected text.
+Press <kbd>Shift</kbd>+<kbd>Super</kbd>+<kbd>Alt</kbd>+<kbd>R</kbd> to display the explanation of selected text.
 Currently, a region must be explicitly selected.
 
 ## Customization
