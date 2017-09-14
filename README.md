@@ -36,3 +36,17 @@ You should locate the file somewhere under `Packages` (`Preferences` -> `Browse 
 
 The plugin uses [YAPE::Regex::Explain](http://search.cpan.org/dist/YAPE-Regex-Explain/Explain.pm) to obtain the regex explanation.
 Therefore, Perl with `YAPE::Regex::Explain` module installed is required.
+
+## Caveats
+
+As this plugin relies on external Perl installation and modules, one must have correct environment setup.
+This includes proper value if Perl's `@INC` variable, which allows Perl to find required modules.
+This directory depends on you environment settings, OS, CPAN configuration and so on.
+
+For example, you might need to define the paths in `PERL5LIB` variable:
+
+`export PERL5LIB=/some/perl/installation/directory/lib`.
+
+Alternatively, one may add the following line to Perl code declared in `get_explanation` method:
+
+`use lib 'c:/StrawberryPERL/perl/site/lib';`
