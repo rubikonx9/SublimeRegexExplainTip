@@ -1,0 +1,5 @@
+RegexExplainTip: 0.9.4 update
+
+Corrected default keymap. The one used up to now conflicted with default key binding.
+As of now, the default shortcut is Shift+Super+Alt+R.
+
